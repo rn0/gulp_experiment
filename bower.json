@@ -1,0 +1,17 @@
+{
+  "name": "gulp_experiment",
+  "version": "0.0.1",
+  "homepage": "https://github.com/rn0/gulp_experiment",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.0",
+    "bootstrap": "~3.0.3"
+  }
+}
