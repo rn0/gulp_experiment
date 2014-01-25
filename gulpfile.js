@@ -7,10 +7,11 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     prefix = require('gulp-autoprefixer'),
     concat = require('gulp-concat'),
-    uglify = require('gulp-uglify');
+    uglify = require('gulp-uglify'),
+    es = require('event-stream');
 
 gulp.task('css', function() {
-    return gulp.src('./assets/less/application.less')
+    gulp.src('./assets/less/application.less')
         .pipe(less())
         .pipe(prefix("last 2 version", "> 1%", "ie 8", "ie 7"))
         .pipe(gulp.dest('./public/css/'))
@@ -20,11 +21,10 @@ gulp.task('css', function() {
 });
 
 gulp.task('js', function() {
-    return gulp.src(['bower_components/jquery/jquery.js', './assets/js/*.js'])
-        .pipe(concat('application.js'))
-        .pipe(gulp.dest('./public/js/'))
-        .pipe(rename({suffix: '.min'}))
-        .pipe(uglify())
+    return es.merge(
+            gulp.src(['bower_components/jquery/jquery.min.js']),
+            gulp.src(['./assets/js/*.js']).pipe(uglify())
+        ).pipe(concat('application.min.js'))
         .pipe(gulp.dest('./public/js/'));
 });
 
