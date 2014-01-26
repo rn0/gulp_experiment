@@ -8,6 +8,9 @@ var gulp = require('gulp'),
     prefix = require('gulp-autoprefixer'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
+    tap = require('gulp-tap'),
+    fs = require('fs'),
+    util = require('util'),
     es = require('event-stream');
 
 gulp.task('css', function() {
@@ -21,10 +24,16 @@ gulp.task('css', function() {
 });
 
 gulp.task('js', function() {
-    return es.merge(
-            gulp.src(['bower_components/jquery/jquery.min.js']),
-            gulp.src(['./assets/js/*.js']).pipe(uglify())
-        ).pipe(concat('application.min.js'))
+    gulp.src(['./assets/js/*.js'])
+        .pipe(uglify())
+        .pipe(concat('application.min.js'))
+        .pipe(tap(function(file) {
+            file.contents = Buffer.concat([
+                fs.readFileSync('./bower_components/jquery/jquery.min.js'),
+                new Buffer ("/*! Application */\n"),
+                file.contents
+            ]);
+        }))
         .pipe(gulp.dest('./public/js/'));
 });
 
