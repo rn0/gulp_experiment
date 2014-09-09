@@ -38,15 +38,8 @@ gulp.task('js', function() {
 });
 
 gulp.task('watch', function() {
-    gulp.watch('./assets/less/**', function(event) {
-         gutil.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-         gulp.run('css');
-    });
-
-    gulp.watch('./assets/js/**', function(event) {
-         gutil.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-         gulp.run('js');
-    });
+    gulp.watch('./assets/less/**', ['css']);
+    gulp.watch('./assets/js/**', ['js']);
 });
 
 // The default task (called when you run `gulp` from cli)
